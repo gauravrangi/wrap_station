@@ -1,26 +1,18 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === "production";
+// When deploying to GitHub Pages at https://<user>.github.io/<repo>,
+// the site lives under /<repo>. Override with NEXT_PUBLIC_BASE_PATH.
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? (isProd ? "/wrap_station" : "");
+
 const nextConfig = {
+  output: "export",
   reactStrictMode: true,
   poweredByHeader: false,
-  images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "scontent.cdninstagram.com" },
-    ],
-  },
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "SAMEORIGIN" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" },
-        ],
-      },
-    ];
-  },
+  trailingSlash: true,
+  basePath,
+  assetPrefix: basePath || undefined,
+  images: { unoptimized: true },
+  env: { NEXT_PUBLIC_BASE_PATH: basePath },
 };
 
 export default nextConfig;

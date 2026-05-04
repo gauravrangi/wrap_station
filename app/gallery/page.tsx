@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { galleryItems } from "@/lib/gallery";
 import { site } from "@/lib/site";
@@ -28,9 +27,7 @@ export default function GalleryPage() {
           <span
             key={f}
             className={`rounded-full border px-4 py-2 ${
-              f === "All"
-                ? "border-accent text-white"
-                : "border-ink-700 text-chrome"
+              f === "All" ? "border-accent text-white" : "border-ink-700 text-chrome"
             }`}
           >
             {f}
@@ -39,29 +36,35 @@ export default function GalleryPage() {
       </div>
 
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {galleryItems.map((g) => (
-          <figure
-            key={g.slug}
-            className="group overflow-hidden rounded-2xl border border-ink-700 bg-ink-900 transition hover:-translate-y-1"
-          >
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <Image
-                src={`/gallery/${g.slug}/image`}
-                alt={`${g.title} — ${g.vehicle}`}
-                fill
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                unoptimized
-              />
-            </div>
-            <figcaption className="border-t border-ink-700 p-5">
-              <p className="text-xs uppercase tracking-widest text-accent">{g.service}</p>
-              <p className="mt-1 font-display text-base font-semibold text-white">{g.title}</p>
-              <p className="mt-1 text-xs text-chrome">{g.vehicle}</p>
-              <p className="mt-3 text-sm text-chrome">{g.caption}</p>
-            </figcaption>
-          </figure>
-        ))}
+        {galleryItems.map((g) => {
+          const [from, to] = g.palette;
+          return (
+            <figure
+              key={g.slug}
+              className="group overflow-hidden rounded-2xl border border-ink-700 bg-ink-900 transition hover:-translate-y-1"
+            >
+              <div
+                className="relative aspect-[4/3] overflow-hidden"
+                style={{ background: `radial-gradient(circle at 30% 25%, ${to}, ${from})` }}
+              >
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_30%,rgba(255,255,255,0.18),transparent_60%)] transition group-hover:opacity-90" />
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                  <p className="text-[10px] uppercase tracking-widest text-accent">{g.service}</p>
+                  <p className="mt-1 font-display text-xl font-semibold leading-tight">{g.title}</p>
+                </div>
+                <div className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-md bg-accent text-[10px] font-bold text-white">
+                  WS
+                </div>
+              </div>
+              <figcaption className="border-t border-ink-700 p-5">
+                <p className="text-xs uppercase tracking-widest text-accent">{g.service}</p>
+                <p className="mt-1 font-display text-base font-semibold text-white">{g.title}</p>
+                <p className="mt-1 text-xs text-chrome">{g.vehicle}</p>
+                <p className="mt-3 text-sm text-chrome">{g.caption}</p>
+              </figcaption>
+            </figure>
+          );
+        })}
       </div>
 
       <div className="mt-16 rounded-3xl border border-ink-700 bg-gradient-to-br from-ink-900 to-accent/10 p-10">
