@@ -1,0 +1,165 @@
+export const packages = {
+  "vinyl-wrap": [
+    {
+      name: "Color-Change — Standard",
+      priceFrom: 3000,
+      priceLabel: "From $3,000",
+      includes: [
+        "Full exterior color-change in matte, satin or gloss",
+        "Premium cast vinyl (3M 2080 / Avery SW900)",
+        "Edge-wrapped on every removable panel",
+        "Door jambs sealed (visible portions)",
+        "5-year manufacturer warranty",
+      ],
+      bestFor: "Tesla Model 3 / Y, BMW 3-Series, Mercedes C-Class",
+    },
+    {
+      name: "Color-Change — Premium",
+      priceFrom: 3500,
+      priceLabel: "From $3,500",
+      featured: true,
+      includes: [
+        "Everything in Standard",
+        "KPMF / Inozetek premium finishes",
+        "Color-flip, chrome and textured options available",
+        "Full door-jamb wrap and trunk channel",
+        "7-year manufacturer warranty",
+      ],
+      bestFor: "Tesla Model S / X, BMW M3 / M5, Mercedes-AMG",
+    },
+    {
+      name: "Accent / Partial",
+      priceFrom: 750,
+      priceLabel: "From $750",
+      includes: [
+        "Roof, mirror caps, hood or trunk wrap",
+        "Chrome delete (badges and trim)",
+        "Custom racing stripes and graphics",
+        "Same premium materials as full wraps",
+      ],
+      bestFor: "Owners adding a quick visual upgrade",
+    },
+  ],
+  ppf: [
+    {
+      name: "Partial Front",
+      priceFrom: 1750,
+      priceLabel: "From $1,750",
+      includes: [
+        "Front bumper",
+        "Partial hood (18-24\")",
+        "Partial fenders",
+        "Mirror caps",
+        "10-year manufacturer warranty",
+      ],
+      bestFor: "Daily drivers wanting rock-chip protection",
+    },
+    {
+      name: "Full Front",
+      priceFrom: 2950,
+      priceLabel: "From $2,950",
+      featured: true,
+      includes: [
+        "Full bumper, hood and fenders",
+        "Mirror caps and headlights",
+        "A-pillars and roof leading edge",
+        "Self-healing top coat",
+        "10-year manufacturer warranty",
+      ],
+      bestFor: "Tesla, BMW M, Mercedes-AMG owners",
+    },
+    {
+      name: "Full Body",
+      priceFrom: 5500,
+      priceLabel: "$5,500 – $7,000",
+      includes: [
+        "Every painted panel covered",
+        "XPEL Ultimate Plus or Stek Dynoshield",
+        "Optional gloss or matte finish",
+        "Door jambs and door cups",
+        "10-year manufacturer warranty",
+      ],
+      bestFor: "Exotics, collectors and lease-end vehicles",
+    },
+  ],
+  "ceramic-coating": [
+    {
+      name: "2-Year Ceramic",
+      priceFrom: 600,
+      priceLabel: "From $600",
+      includes: [
+        "Single-stage paint decontamination",
+        "1-step polish",
+        "Single-layer ceramic coating",
+        "Hydrophobic finish",
+      ],
+      bestFor: "Newer vehicles with healthy paint",
+    },
+    {
+      name: "5-Year Ceramic",
+      priceFrom: 900,
+      priceLabel: "From $900",
+      featured: true,
+      includes: [
+        "Two-stage paint correction",
+        "Dual-layer ceramic coating",
+        "Wheel face and barrel coating",
+        "Glass and trim coating",
+      ],
+      bestFor: "Daily-driven Teslas, BMWs, Mercedes",
+    },
+    {
+      name: "7+ Year Ceramic",
+      priceFrom: 1200,
+      priceLabel: "From $1,200",
+      includes: [
+        "Multi-stage paint correction",
+        "Top-tier ceramic system",
+        "Wheels off — barrels and calipers",
+        "Interior leather + fabric coating",
+      ],
+      bestFor: "Show cars, exotics and long-hold vehicles",
+    },
+  ],
+  "window-tint": [
+    {
+      name: "Carbon Tint",
+      priceFrom: 450,
+      priceLabel: "From $450",
+      includes: [
+        "All side and rear windows",
+        "Computer-cut for perfect fit",
+        "99% UV rejection",
+        "Lifetime warranty",
+      ],
+      bestFor: "Privacy and a darker aesthetic",
+    },
+    {
+      name: "Ceramic Tint",
+      priceFrom: 750,
+      priceLabel: "From $750",
+      featured: true,
+      includes: [
+        "All side and rear windows",
+        "Up to 70% IR heat rejection",
+        "Signal-clear (no GPS / cell interference)",
+        "Lifetime warranty",
+      ],
+      bestFor: "Hot-weather daily drivers",
+    },
+    {
+      name: "Tesla Glass-Roof Package",
+      priceFrom: 950,
+      priceLabel: "From $950",
+      includes: [
+        "Ceramic film for entire glass roof",
+        "Up to 88% heat rejection",
+        "Reduces interior glare",
+        "Pairs with full-cabin ceramic tint",
+      ],
+      bestFor: "Tesla Model 3, Y, S and X",
+    },
+  ],
+} as const;
+
+export type PackageGroup = keyof typeof packages;

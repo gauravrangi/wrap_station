@@ -1,8 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { site, services } from "@/lib/site";
+import { testimonials, aggregateRating } from "@/lib/testimonials";
+import { posts } from "@/lib/posts";
+import { vehicles } from "@/lib/vehicles";
+import { materials } from "@/lib/materials";
 import ServiceCard from "@/components/ServiceCard";
+import TestimonialCard from "@/components/TestimonialCard";
 import SectionHeading from "@/components/SectionHeading";
+import Stars from "@/components/Stars";
 
 export const metadata: Metadata = {
   title: `Vinyl Wrap, PPF, Ceramic Coating & Window Tint | San Diego`,
@@ -11,6 +17,10 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const featuredPosts = [...posts]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 3);
+
   return (
     <>
       {/* HERO */}
@@ -35,6 +45,13 @@ export default function HomePage() {
               <a href={`tel:${site.phone}`} className="btn-ghost">
                 Call {site.phoneDisplay}
               </a>
+            </div>
+            <div className="mt-8 flex items-center gap-3 text-sm text-chrome">
+              <Stars rating={5} />
+              <span>
+                <strong className="text-white">{aggregateRating.value.toFixed(1)} / 5</strong>{" "}
+                from {aggregateRating.count}+ verified clients
+              </span>
             </div>
             <dl className="mt-12 grid grid-cols-3 gap-6 border-t border-ink-800 pt-8 text-sm">
               <Stat k="500+" v="Vehicles transformed" />
@@ -69,6 +86,9 @@ export default function HomePage() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((s) => <ServiceCard key={s.slug} s={s} />)}
         </div>
+        <div className="mt-10 text-center">
+          <Link href="/pricing" className="btn-ghost">See full pricing & packages</Link>
+        </div>
       </section>
 
       {/* WHO WE BUILD FOR */}
@@ -80,14 +100,15 @@ export default function HomePage() {
               title="Built around the cars you actually drive."
               intro="We specialize in Tesla, BMW, Mercedes-AMG and other premium platforms. Our patterns, materials and process are dialed in for the cars San Diego drives every day."
             />
-            <div className="grid grid-cols-2 gap-4 self-end sm:grid-cols-3">
-              {["Tesla", "BMW M", "Mercedes AMG", "Audi RS", "Porsche", "Lucid"].map((b) => (
-                <div
-                  key={b}
-                  className="rounded-xl border border-ink-700 bg-ink-950/60 px-4 py-6 text-center font-display text-sm tracking-wider text-chrome"
+            <div className="grid grid-cols-2 gap-3 self-end sm:grid-cols-3">
+              {vehicles.slice(0, 6).map((v) => (
+                <Link
+                  key={v.slug}
+                  href={`/vehicles/${v.slug}`}
+                  className="rounded-xl border border-ink-700 bg-ink-950/60 px-4 py-6 text-center font-display text-sm tracking-wider text-chrome hover:border-accent hover:text-white"
                 >
-                  {b}
-                </div>
+                  {v.name}
+                </Link>
               ))}
             </div>
           </div>
@@ -96,10 +117,15 @@ export default function HomePage() {
 
       {/* PROCESS */}
       <section className="container-x py-20 sm:py-24">
-        <SectionHeading
-          eyebrow="How it works"
-          title="From quote to keys back in your hand."
-        />
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading
+            eyebrow="How it works"
+            title="From quote to keys back in your hand."
+          />
+          <Link href="/process" className="text-sm font-semibold text-accent hover:text-white">
+            See the full process →
+          </Link>
+        </div>
         <ol className="mt-12 grid gap-6 md:grid-cols-4">
           {[
             ["01", "Consultation", "Tell us about your car and the look you're after — in person, by text or by phone."],
@@ -116,8 +142,89 @@ export default function HomePage() {
         </ol>
       </section>
 
+      {/* TESTIMONIALS */}
+      <section className="border-t border-ink-800 bg-ink-900/40">
+        <div className="container-x py-20 sm:py-24">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <SectionHeading
+              eyebrow="Reviews"
+              title="What our clients say."
+              intro="5.0★ across Google, Yelp and Instagram — across every service we offer."
+            />
+            <Link href="/reviews" className="text-sm font-semibold text-accent hover:text-white">
+              All reviews →
+            </Link>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.slice(0, 3).map((t) => (
+              <TestimonialCard
+                key={t.name}
+                name={t.name}
+                vehicle={t.vehicle}
+                quote={t.quote}
+                rating={t.rating}
+                service={t.service}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MATERIALS */}
+      <section className="container-x py-20 sm:py-24">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading
+            eyebrow="Materials"
+            title="The brands you'll see on the shelf."
+            intro="We install only premium films and coatings — never bargain vinyl, never knockoff PPF."
+          />
+          <Link href="/materials" className="text-sm font-semibold text-accent hover:text-white">
+            All brands →
+          </Link>
+        </div>
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+          {materials.map((m) => (
+            <div
+              key={m.name}
+              className="grid h-20 place-items-center rounded-xl border border-ink-700 bg-ink-900/60 font-display text-sm tracking-wider text-chrome"
+            >
+              {m.name}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BLOG TEASE */}
+      <section className="border-y border-ink-800 bg-ink-900/30">
+        <div className="container-x py-20">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <SectionHeading
+              eyebrow="Studio notebook"
+              title="Guides from inside the bay."
+              intro="Honest, installer-written articles on wraps, PPF, ceramic and tint."
+            />
+            <Link href="/blog" className="text-sm font-semibold text-accent hover:text-white">
+              All articles →
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {featuredPosts.map((p) => (
+              <Link key={p.slug} href={`/blog/${p.slug}`} className="card hover:-translate-y-1">
+                <p className="text-xs uppercase tracking-widest text-accent">
+                  {p.category} • {p.readMinutes} min
+                </p>
+                <h3 className="mt-3 font-display text-lg font-semibold text-white">
+                  {p.title}
+                </h3>
+                <p className="mt-2 text-sm text-chrome">{p.description}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* INSTAGRAM CTA */}
-      <section className="border-t border-ink-800 bg-gradient-to-b from-ink-950 to-ink-900">
+      <section className="border-b border-ink-800 bg-gradient-to-b from-ink-950 to-ink-900">
         <div className="container-x grid items-center gap-10 py-20 lg:grid-cols-2 lg:py-24">
           <div>
             <p className="eyebrow">Latest from the studio</p>

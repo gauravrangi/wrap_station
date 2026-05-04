@@ -5,6 +5,7 @@ import { site } from "@/lib/site";
 import { localBusinessJsonLd } from "@/lib/jsonld";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import StickyMobileCTA from "@/components/StickyMobileCTA";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", display: "swap" });
@@ -77,8 +78,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <SiteHeader />
-        <main id="main">{children}</main>
+        <main id="main" className="pb-20 lg:pb-0">{children}</main>
         <SiteFooter />
+        <StickyMobileCTA />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
