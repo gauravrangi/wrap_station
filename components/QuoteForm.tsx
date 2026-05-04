@@ -3,29 +3,68 @@
 import { useState } from "react";
 import { services } from "@/lib/site";
 
+type State = "idle" | "submitting" | "ok" | "error";
+
 export default function QuoteForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [state, setState] = useState<State>("idle");
+  const [error, setError] = useState<string | null>(null);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    const subject = `Wrap Station quote — ${data.get("service")} for ${data.get("vehicle")}`;
-    const body = `Name: ${data.get("name")}
-Phone: ${data.get("phone")}
-Email: ${data.get("email")}
-Vehicle: ${data.get("vehicle")}
-Service: ${data.get("service")}
+    setError(null);
+    setState("submitting");
 
-${data.get("message") ?? ""}`;
-    window.location.href = `mailto:info@wrapstationsocal.com?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-    setSubmitted(true);
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || "Could not send");
+      }
+      setState("ok");
+      form.reset();
+    } catch (err: unknown) {
+      setState("error");
+      setError(err instanceof Error ? err.message : "Could not send");
+    }
+  }
+
+  if (state === "ok") {
+    return (
+      <div className="rounded-xl border border-accent/40 bg-accent/10 p-6 text-sm text-white">
+        <p className="font-display text-lg font-semibold">Got it — talk soon.</p>
+        <p className="mt-2 text-chrome">
+          We've received your request and will reply within one business day. If
+          you need an answer faster, give the studio a call.
+        </p>
+        <button
+          type="button"
+          onClick={() => setState("idle")}
+          className="mt-4 text-xs uppercase tracking-widest text-accent hover:text-white"
+        >
+          Send another request
+        </button>
+      </div>
+    );
   }
 
   return (
     <form onSubmit={onSubmit} className="grid gap-4 sm:grid-cols-2">
+      {/* honeypot */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+        aria-hidden
+      />
       <Field label="Your name" name="name" required />
       <Field label="Phone" name="phone" type="tel" required />
       <Field label="Email" name="email" type="email" required className="sm:col-span-2" />
@@ -58,12 +97,17 @@ ${data.get("message") ?? ""}`;
           className="mt-2 w-full rounded-lg border border-ink-700 bg-ink-900 px-4 py-3 text-sm text-white focus:border-accent focus:outline-none"
         />
       </div>
+      {state === "error" && error && (
+        <p className="sm:col-span-2 rounded-md border border-accent/40 bg-accent/10 p-3 text-xs text-white">
+          {error}. Try again or call the studio directly.
+        </p>
+      )}
       <div className="sm:col-span-2 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-chrome">
           We typically respond within one business day.
         </p>
-        <button type="submit" className="btn-primary">
-          {submitted ? "Email opened ✓" : "Request my quote"}
+        <button type="submit" disabled={state === "submitting"} className="btn-primary disabled:opacity-60">
+          {state === "submitting" ? "Sending…" : "Request my quote"}
         </button>
       </div>
     </form>

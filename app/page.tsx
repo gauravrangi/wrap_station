@@ -9,6 +9,7 @@ import ServiceCard from "@/components/ServiceCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import SectionHeading from "@/components/SectionHeading";
 import Stars from "@/components/Stars";
+import InstagramFeed from "@/components/InstagramFeed";
 
 export const metadata: Metadata = {
   title: `Vinyl Wrap, PPF, Ceramic Coating & Window Tint | San Diego`,
@@ -244,13 +245,8 @@ export default function HomePage() {
               Follow {site.instagramHandle}
             </a>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="aspect-square rounded-lg border border-ink-700 bg-gradient-to-br from-ink-800 to-ink-950"
-              />
-            ))}
+          <div>
+            <InstagramFeed />
           </div>
         </div>
       </section>

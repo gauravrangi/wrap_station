@@ -71,8 +71,8 @@ export default function SiteHeader() {
           >
             {site.phoneDisplay}
           </a>
-          <Link href="/contact" className="hidden btn-primary !px-5 !py-2 text-xs sm:inline-flex">
-            Get a Quote
+          <Link href="/book" className="hidden btn-primary !px-5 !py-2 text-xs sm:inline-flex">
+            Book a Visit
           </Link>
           <button
             type="button"

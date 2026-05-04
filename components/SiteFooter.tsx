@@ -95,6 +95,7 @@ export default function SiteFooter() {
             <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
             <li><Link href="/aftercare" className="hover:text-white">Aftercare</Link></li>
             <li><Link href="/warranty" className="hover:text-white">Warranty</Link></li>
+            <li><Link href="/book" className="hover:text-white">Book a Visit</Link></li>
             <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
           </ul>
         </div>

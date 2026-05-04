@@ -12,10 +12,10 @@ export default function StickyMobileCTA() {
           Call
         </a>
         <Link
-          href="/contact"
+          href="/book"
           className="flex-1 rounded-full bg-accent px-4 py-3 text-center text-sm font-semibold text-white"
         >
-          Get a Quote
+          Book a Visit
         </Link>
       </div>
     </div>

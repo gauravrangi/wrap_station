@@ -23,9 +23,19 @@ for organic search and local SEO.
 
 ```bash
 npm install
+cp .env.example .env.local   # fill in real values
 npm run dev
 # → http://localhost:3000
 ```
+
+## Integrations
+
+| Feature | Lives at | How it works |
+| --- | --- | --- |
+| Lead emails (quote form) | `app/api/quote/route.ts` | POSTs to Resend. Set `RESEND_API_KEY`, `QUOTE_TO_EMAIL`, `QUOTE_FROM_EMAIL` in `.env.local`. |
+| Booking calendar | `/book` (`components/CalEmbed.tsx`) | Inline Cal.com embed. Set `NEXT_PUBLIC_CAL_LINK` to your `<user>/<event-slug>`. |
+| Instagram feed | Home page + `lib/instagram.ts` | Add post permalinks to the array — they render via Instagram's official `embed.js`. Falls back to a styled placeholder grid when empty. |
+| Gallery imagery | `lib/gallery.ts` + `app/gallery/[slug]/image/route.tsx` | Each gallery card has its image generated at request time by `next/og` using a per-item color palette. To use real photos instead, replace the `<Image src="/gallery/<slug>/image" />` line in `app/gallery/page.tsx` with paths into `/public/gallery/...`. |
 
 ## Project structure
 

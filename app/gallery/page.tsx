@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { galleryItems } from "@/lib/gallery";
 import { site } from "@/lib/site";
 import SectionHeading from "@/components/SectionHeading";
 
@@ -9,21 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/gallery" },
 };
 
-const placeholders = Array.from({ length: 9 }).map((_, i) => ({
-  id: i,
-  title: [
-    "Tesla Model Y — Satin Frozen Black",
-    "BMW M4 — Full PPF + Ceramic",
-    "Mercedes G63 — Matte Military Green",
-    "Tesla Model 3 — Gloss Burnt Orange",
-    "Porsche 911 — Stek Dynoshield PPF",
-    "Audi RS6 — Nardo Grey Wrap",
-    "Tesla Model S — Ceramic Tint Package",
-    "BMW i7 — Satin Pearl White Wrap",
-    "Lucid Air — Full Body XPEL",
-  ][i],
-  service: ["Vinyl Wrap", "PPF", "Vinyl Wrap", "Vinyl Wrap", "PPF", "Vinyl Wrap", "Window Tint", "Vinyl Wrap", "PPF"][i],
-}));
+const filters = ["All", "Vinyl Wrap", "PPF", "Ceramic", "Window Tint"] as const;
 
 export default function GalleryPage() {
   return (
@@ -31,26 +20,58 @@ export default function GalleryPage() {
       <SectionHeading
         eyebrow="Gallery"
         title="Recent builds from the studio"
-        intro={`A snapshot of recent work. The freshest projects always go up first on Instagram — follow ${site.instagramHandle}.`}
+        intro={`Selected projects from the last few months. The freshest work always lands first on Instagram — follow ${site.instagramHandle}.`}
       />
-      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {placeholders.map((p) => (
-          <figure key={p.id} className="group overflow-hidden rounded-2xl border border-ink-700 bg-ink-900">
-            <div className="relative aspect-[4/3] bg-gradient-to-br from-ink-700 via-ink-900 to-ink-950">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(225,29,42,0.15),transparent_60%)] transition group-hover:opacity-80" />
+
+      <div className="mt-10 flex flex-wrap gap-2 text-sm">
+        {filters.map((f) => (
+          <span
+            key={f}
+            className={`rounded-full border px-4 py-2 ${
+              f === "All"
+                ? "border-accent text-white"
+                : "border-ink-700 text-chrome"
+            }`}
+          >
+            {f}
+          </span>
+        ))}
+      </div>
+
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {galleryItems.map((g) => (
+          <figure
+            key={g.slug}
+            className="group overflow-hidden rounded-2xl border border-ink-700 bg-ink-900 transition hover:-translate-y-1"
+          >
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <Image
+                src={`/gallery/${g.slug}/image`}
+                alt={`${g.title} — ${g.vehicle}`}
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                unoptimized
+              />
             </div>
-            <figcaption className="border-t border-ink-700 p-4">
-              <p className="text-xs uppercase tracking-widest text-accent">{p.service}</p>
-              <p className="mt-1 font-display text-base font-semibold text-white">{p.title}</p>
+            <figcaption className="border-t border-ink-700 p-5">
+              <p className="text-xs uppercase tracking-widest text-accent">{g.service}</p>
+              <p className="mt-1 font-display text-base font-semibold text-white">{g.title}</p>
+              <p className="mt-1 text-xs text-chrome">{g.vehicle}</p>
+              <p className="mt-3 text-sm text-chrome">{g.caption}</p>
             </figcaption>
           </figure>
         ))}
       </div>
-      <div className="mt-12 rounded-2xl border border-dashed border-ink-700 p-6 text-sm text-chrome">
-        <strong className="text-white">Photos coming soon.</strong> Drop your own
-        gallery shots in <code className="rounded bg-ink-800 px-1.5 py-0.5">/public/gallery/</code>{" "}
-        and replace the placeholders in <code className="rounded bg-ink-800 px-1.5 py-0.5">app/gallery/page.tsx</code>{" "}
-        — or hand them off and we'll wire it up.
+
+      <div className="mt-16 rounded-3xl border border-ink-700 bg-gradient-to-br from-ink-900 to-accent/10 p-10">
+        <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">
+          Want your build in the gallery?
+        </h2>
+        <p className="mt-3 max-w-xl text-chrome">
+          Bring us your car and we'll add the build to the studio book.
+        </p>
+        <Link href="/contact" className="btn-primary mt-6">Start my project</Link>
       </div>
     </section>
   );
