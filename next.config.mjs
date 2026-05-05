@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === "production";
-// When deploying to GitHub Pages at https://<user>.github.io/<repo>,
-// the site lives under /<repo>. Override with NEXT_PUBLIC_BASE_PATH.
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? (isProd ? "/wrap_station" : "");
+// On Vercel, leave basePath empty so the site lives at the root.
+// GitHub Pages CI sets NEXT_PUBLIC_BASE_PATH (from actions/configure-pages)
+// so the same build works under /<repo> on github.io.
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const nextConfig = {
   output: "export",
